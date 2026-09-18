@@ -1,30 +1,19 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import authenticationPageImage from "../assets/authentication-page-image.jpg";
+import { AuthenticationLayout } from "@/components/layout/AuthenticationLayout";
 
 export const Route = createFileRoute("/_authentication")({
-  component: AuthenticationLayout,
+  component: AuthenticationRouteLayout,
   beforeLoad: async ({ context }) => {
     if (context.auth.isLogged()) {
-      throw redirect({
-        to: "/",
-      });
+      throw redirect({ to: "/" });
     }
   },
 });
 
-function AuthenticationLayout() {
+function AuthenticationRouteLayout() {
   return (
-    <div className="flex flex-col-reverse md:flex-row">
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <Outlet />
-      </div>
-      <div className="flex-1 h-screen">
-        <img
-          src={authenticationPageImage}
-          alt="authentication page image"
-          className="h-full"
-        />
-      </div>
-    </div>
+    <AuthenticationLayout>
+      <Outlet />
+    </AuthenticationLayout>
   );
 }

@@ -1,34 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useGetProjectDetails } from "../../../services/queries/projectQueries";
-import ProjectDetails from "../../../components/projectsDetails/ProjectDetails";
-import PaymentList from "../../../components/projectsDetails/PaymentList";
+import { ProjectDetailsPage } from "@/components/pages/projects/details/ProjectDetailsPage";
+import { projectDetailsQuery } from "@/lib/queries/projects";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/project/$projectCode")({
-  component: Project,
+  loader: async ({ context, params }) => {
+    await context.queryClient.ensureQueryData(
+      projectDetailsQuery(params.projectCode),
+    );
+  },
+  component: ProjectRoute,
+  pendingComponent: ProjectPending,
 });
 
-function Project() {
-  const { projectCode } = Route.useParams();
-
-  const { data, isLoading, isError, error } = useGetProjectDetails(projectCode);
-  console.log("called");
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (isError) {
-    return <div>{error.message}</div>;
-  }
-
+function ProjectPending() {
   return (
-    <div className="container mx-auto p-4 ">
-      <ProjectDetails details={data} />
-      <PaymentList
-        projectName={data.name}
-        due={data.due}
-        projectId={data._id}
-        paymentList={data.paymentList}
-      />
+    <div className="flex flex-col gap-4">
+      <Skeleton className="h-10 w-64" />
+      <Skeleton className="h-64 w-full rounded-xl" />
+      <Skeleton className="h-48 w-full rounded-xl" />
     </div>
   );
+}
+
+function ProjectRoute() {
+  const { projectCode } = Route.useParams();
+  return <ProjectDetailsPage projectCode={projectCode} />;
 }

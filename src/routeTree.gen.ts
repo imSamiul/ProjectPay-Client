@@ -16,11 +16,19 @@ import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticationSignUpImport } from './routes/_authentication/signUp'
 import { Route as AuthenticationLoginImport } from './routes/_authentication/login'
+import { Route as AuthenticationForgotPasswordImport } from './routes/_authentication/forgotPassword'
 import { Route as AuthenticatedProjectManagerImport } from './routes/_authenticated/projectManager'
+import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAccountImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedAdminIndexImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedProjectManagerProjectsImport } from './routes/_authenticated/projectManager/projects'
 import { Route as AuthenticatedProjectManagerManagerOverviewImport } from './routes/_authenticated/projectManager/managerOverview'
+import { Route as AuthenticatedProjectManagerDashboardImport } from './routes/_authenticated/projectManager/dashboard'
 import { Route as AuthenticatedProjectManagerAddProjectImport } from './routes/_authenticated/projectManager/addProject'
 import { Route as AuthenticatedProjectManagerAddClientImport } from './routes/_authenticated/projectManager/addClient'
 import { Route as AuthenticatedProjectProjectCodeImport } from './routes/_authenticated/project/$projectCode'
+import { Route as AuthenticatedAdminUsersImport } from './routes/_authenticated/admin/users'
+import { Route as AuthenticatedAdminProjectsImport } from './routes/_authenticated/admin/projects'
 import { Route as AuthenticatedProjectEditProjectCodeImport } from './routes/_authenticated/project/edit/$projectCode'
 
 // Create/Update Routes
@@ -50,15 +58,48 @@ const AuthenticationLoginRoute = AuthenticationLoginImport.update({
   getParentRoute: () => AuthenticationRoute,
 } as any)
 
+const AuthenticationForgotPasswordRoute =
+  AuthenticationForgotPasswordImport.update({
+    path: '/forgotPassword',
+    getParentRoute: () => AuthenticationRoute,
+  } as any)
+
 const AuthenticatedProjectManagerRoute =
   AuthenticatedProjectManagerImport.update({
     path: '/projectManager',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
+const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedAccountRoute = AuthenticatedAccountImport.update({
+  path: '/account',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedProjectManagerProjectsRoute =
+  AuthenticatedProjectManagerProjectsImport.update({
+    path: '/projects',
+    getParentRoute: () => AuthenticatedProjectManagerRoute,
+  } as any)
+
 const AuthenticatedProjectManagerManagerOverviewRoute =
   AuthenticatedProjectManagerManagerOverviewImport.update({
     path: '/managerOverview',
+    getParentRoute: () => AuthenticatedProjectManagerRoute,
+  } as any)
+
+const AuthenticatedProjectManagerDashboardRoute =
+  AuthenticatedProjectManagerDashboardImport.update({
+    path: '/dashboard',
     getParentRoute: () => AuthenticatedProjectManagerRoute,
   } as any)
 
@@ -79,6 +120,18 @@ const AuthenticatedProjectProjectCodeRoute =
     path: '/project/$projectCode',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersImport.update({
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedAdminProjectsRoute = AuthenticatedAdminProjectsImport.update(
+  {
+    path: '/projects',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any,
+)
 
 const AuthenticatedProjectEditProjectCodeRoute =
   AuthenticatedProjectEditProjectCodeImport.update({
@@ -111,12 +164,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticationImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/projectManager': {
       id: '/_authenticated/projectManager'
       path: '/projectManager'
       fullPath: '/projectManager'
       preLoaderRoute: typeof AuthenticatedProjectManagerImport
       parentRoute: typeof AuthenticatedImport
+    }
+    '/_authentication/forgotPassword': {
+      id: '/_authentication/forgotPassword'
+      path: '/forgotPassword'
+      fullPath: '/forgotPassword'
+      preLoaderRoute: typeof AuthenticationForgotPasswordImport
+      parentRoute: typeof AuthenticationImport
     }
     '/_authentication/login': {
       id: '/_authentication/login'
@@ -131,6 +205,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/signUp'
       preLoaderRoute: typeof AuthenticationSignUpImport
       parentRoute: typeof AuthenticationImport
+    }
+    '/_authenticated/admin/projects': {
+      id: '/_authenticated/admin/projects'
+      path: '/projects'
+      fullPath: '/admin/projects'
+      preLoaderRoute: typeof AuthenticatedAdminProjectsImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersImport
+      parentRoute: typeof AuthenticatedAdminImport
     }
     '/_authenticated/project/$projectCode': {
       id: '/_authenticated/project/$projectCode'
@@ -153,12 +241,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectManagerAddProjectImport
       parentRoute: typeof AuthenticatedProjectManagerImport
     }
+    '/_authenticated/projectManager/dashboard': {
+      id: '/_authenticated/projectManager/dashboard'
+      path: '/dashboard'
+      fullPath: '/projectManager/dashboard'
+      preLoaderRoute: typeof AuthenticatedProjectManagerDashboardImport
+      parentRoute: typeof AuthenticatedProjectManagerImport
+    }
     '/_authenticated/projectManager/managerOverview': {
       id: '/_authenticated/projectManager/managerOverview'
       path: '/managerOverview'
       fullPath: '/projectManager/managerOverview'
       preLoaderRoute: typeof AuthenticatedProjectManagerManagerOverviewImport
       parentRoute: typeof AuthenticatedProjectManagerImport
+    }
+    '/_authenticated/projectManager/projects': {
+      id: '/_authenticated/projectManager/projects'
+      path: '/projects'
+      fullPath: '/projectManager/projects'
+      preLoaderRoute: typeof AuthenticatedProjectManagerProjectsImport
+      parentRoute: typeof AuthenticatedProjectManagerImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexImport
+      parentRoute: typeof AuthenticatedAdminImport
     }
     '/_authenticated/project/edit/$projectCode': {
       id: '/_authenticated/project/edit/$projectCode'
@@ -172,10 +281,27 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminProjectsRoute: typeof AuthenticatedAdminProjectsRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminProjectsRoute: AuthenticatedAdminProjectsRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedProjectManagerRouteChildren {
   AuthenticatedProjectManagerAddClientRoute: typeof AuthenticatedProjectManagerAddClientRoute
   AuthenticatedProjectManagerAddProjectRoute: typeof AuthenticatedProjectManagerAddProjectRoute
+  AuthenticatedProjectManagerDashboardRoute: typeof AuthenticatedProjectManagerDashboardRoute
   AuthenticatedProjectManagerManagerOverviewRoute: typeof AuthenticatedProjectManagerManagerOverviewRoute
+  AuthenticatedProjectManagerProjectsRoute: typeof AuthenticatedProjectManagerProjectsRoute
 }
 
 const AuthenticatedProjectManagerRouteChildren: AuthenticatedProjectManagerRouteChildren =
@@ -184,8 +310,12 @@ const AuthenticatedProjectManagerRouteChildren: AuthenticatedProjectManagerRoute
       AuthenticatedProjectManagerAddClientRoute,
     AuthenticatedProjectManagerAddProjectRoute:
       AuthenticatedProjectManagerAddProjectRoute,
+    AuthenticatedProjectManagerDashboardRoute:
+      AuthenticatedProjectManagerDashboardRoute,
     AuthenticatedProjectManagerManagerOverviewRoute:
       AuthenticatedProjectManagerManagerOverviewRoute,
+    AuthenticatedProjectManagerProjectsRoute:
+      AuthenticatedProjectManagerProjectsRoute,
   }
 
 const AuthenticatedProjectManagerRouteWithChildren =
@@ -194,12 +324,16 @@ const AuthenticatedProjectManagerRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedProjectManagerRoute: typeof AuthenticatedProjectManagerRouteWithChildren
   AuthenticatedProjectProjectCodeRoute: typeof AuthenticatedProjectProjectCodeRoute
   AuthenticatedProjectEditProjectCodeRoute: typeof AuthenticatedProjectEditProjectCodeRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedProjectManagerRoute:
     AuthenticatedProjectManagerRouteWithChildren,
   AuthenticatedProjectProjectCodeRoute: AuthenticatedProjectProjectCodeRoute,
@@ -212,11 +346,13 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface AuthenticationRouteChildren {
+  AuthenticationForgotPasswordRoute: typeof AuthenticationForgotPasswordRoute
   AuthenticationLoginRoute: typeof AuthenticationLoginRoute
   AuthenticationSignUpRoute: typeof AuthenticationSignUpRoute
 }
 
 const AuthenticationRouteChildren: AuthenticationRouteChildren = {
+  AuthenticationForgotPasswordRoute: AuthenticationForgotPasswordRoute,
   AuthenticationLoginRoute: AuthenticationLoginRoute,
   AuthenticationSignUpRoute: AuthenticationSignUpRoute,
 }
@@ -228,26 +364,41 @@ const AuthenticationRouteWithChildren = AuthenticationRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthenticationRouteWithChildren
+  '/account': typeof AuthenticatedAccountRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/projectManager': typeof AuthenticatedProjectManagerRouteWithChildren
+  '/forgotPassword': typeof AuthenticationForgotPasswordRoute
   '/login': typeof AuthenticationLoginRoute
   '/signUp': typeof AuthenticationSignUpRoute
+  '/admin/projects': typeof AuthenticatedAdminProjectsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/project/$projectCode': typeof AuthenticatedProjectProjectCodeRoute
   '/projectManager/addClient': typeof AuthenticatedProjectManagerAddClientRoute
   '/projectManager/addProject': typeof AuthenticatedProjectManagerAddProjectRoute
+  '/projectManager/dashboard': typeof AuthenticatedProjectManagerDashboardRoute
   '/projectManager/managerOverview': typeof AuthenticatedProjectManagerManagerOverviewRoute
+  '/projectManager/projects': typeof AuthenticatedProjectManagerProjectsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/project/edit/$projectCode': typeof AuthenticatedProjectEditProjectCodeRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthenticationRouteWithChildren
+  '/account': typeof AuthenticatedAccountRoute
   '/projectManager': typeof AuthenticatedProjectManagerRouteWithChildren
+  '/forgotPassword': typeof AuthenticationForgotPasswordRoute
   '/login': typeof AuthenticationLoginRoute
   '/signUp': typeof AuthenticationSignUpRoute
+  '/admin/projects': typeof AuthenticatedAdminProjectsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/project/$projectCode': typeof AuthenticatedProjectProjectCodeRoute
   '/projectManager/addClient': typeof AuthenticatedProjectManagerAddClientRoute
   '/projectManager/addProject': typeof AuthenticatedProjectManagerAddProjectRoute
+  '/projectManager/dashboard': typeof AuthenticatedProjectManagerDashboardRoute
   '/projectManager/managerOverview': typeof AuthenticatedProjectManagerManagerOverviewRoute
+  '/projectManager/projects': typeof AuthenticatedProjectManagerProjectsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/project/edit/$projectCode': typeof AuthenticatedProjectEditProjectCodeRoute
 }
 
@@ -256,13 +407,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_authentication': typeof AuthenticationRouteWithChildren
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/projectManager': typeof AuthenticatedProjectManagerRouteWithChildren
+  '/_authentication/forgotPassword': typeof AuthenticationForgotPasswordRoute
   '/_authentication/login': typeof AuthenticationLoginRoute
   '/_authentication/signUp': typeof AuthenticationSignUpRoute
+  '/_authenticated/admin/projects': typeof AuthenticatedAdminProjectsRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/project/$projectCode': typeof AuthenticatedProjectProjectCodeRoute
   '/_authenticated/projectManager/addClient': typeof AuthenticatedProjectManagerAddClientRoute
   '/_authenticated/projectManager/addProject': typeof AuthenticatedProjectManagerAddProjectRoute
+  '/_authenticated/projectManager/dashboard': typeof AuthenticatedProjectManagerDashboardRoute
   '/_authenticated/projectManager/managerOverview': typeof AuthenticatedProjectManagerManagerOverviewRoute
+  '/_authenticated/projectManager/projects': typeof AuthenticatedProjectManagerProjectsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/project/edit/$projectCode': typeof AuthenticatedProjectEditProjectCodeRoute
 }
 
@@ -271,38 +430,61 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/account'
+    | '/admin'
     | '/projectManager'
+    | '/forgotPassword'
     | '/login'
     | '/signUp'
+    | '/admin/projects'
+    | '/admin/users'
     | '/project/$projectCode'
     | '/projectManager/addClient'
     | '/projectManager/addProject'
+    | '/projectManager/dashboard'
     | '/projectManager/managerOverview'
+    | '/projectManager/projects'
+    | '/admin/'
     | '/project/edit/$projectCode'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
+    | '/account'
     | '/projectManager'
+    | '/forgotPassword'
     | '/login'
     | '/signUp'
+    | '/admin/projects'
+    | '/admin/users'
     | '/project/$projectCode'
     | '/projectManager/addClient'
     | '/projectManager/addProject'
+    | '/projectManager/dashboard'
     | '/projectManager/managerOverview'
+    | '/projectManager/projects'
+    | '/admin'
     | '/project/edit/$projectCode'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_authentication'
+    | '/_authenticated/account'
+    | '/_authenticated/admin'
     | '/_authenticated/projectManager'
+    | '/_authentication/forgotPassword'
     | '/_authentication/login'
     | '/_authentication/signUp'
+    | '/_authenticated/admin/projects'
+    | '/_authenticated/admin/users'
     | '/_authenticated/project/$projectCode'
     | '/_authenticated/projectManager/addClient'
     | '/_authenticated/projectManager/addProject'
+    | '/_authenticated/projectManager/dashboard'
     | '/_authenticated/projectManager/managerOverview'
+    | '/_authenticated/projectManager/projects'
+    | '/_authenticated/admin/'
     | '/_authenticated/project/edit/$projectCode'
   fileRoutesById: FileRoutesById
 }
@@ -342,6 +524,8 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/account",
+        "/_authenticated/admin",
         "/_authenticated/projectManager",
         "/_authenticated/project/$projectCode",
         "/_authenticated/project/edit/$projectCode"
@@ -350,8 +534,22 @@ export const routeTree = rootRoute
     "/_authentication": {
       "filePath": "_authentication.tsx",
       "children": [
+        "/_authentication/forgotPassword",
         "/_authentication/login",
         "/_authentication/signUp"
+      ]
+    },
+    "/_authenticated/account": {
+      "filePath": "_authenticated/account.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/admin": {
+      "filePath": "_authenticated/admin.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/admin/projects",
+        "/_authenticated/admin/users",
+        "/_authenticated/admin/"
       ]
     },
     "/_authenticated/projectManager": {
@@ -360,8 +558,14 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/projectManager/addClient",
         "/_authenticated/projectManager/addProject",
-        "/_authenticated/projectManager/managerOverview"
+        "/_authenticated/projectManager/dashboard",
+        "/_authenticated/projectManager/managerOverview",
+        "/_authenticated/projectManager/projects"
       ]
+    },
+    "/_authentication/forgotPassword": {
+      "filePath": "_authentication/forgotPassword.tsx",
+      "parent": "/_authentication"
     },
     "/_authentication/login": {
       "filePath": "_authentication/login.tsx",
@@ -370,6 +574,14 @@ export const routeTree = rootRoute
     "/_authentication/signUp": {
       "filePath": "_authentication/signUp.tsx",
       "parent": "/_authentication"
+    },
+    "/_authenticated/admin/projects": {
+      "filePath": "_authenticated/admin/projects.tsx",
+      "parent": "/_authenticated/admin"
+    },
+    "/_authenticated/admin/users": {
+      "filePath": "_authenticated/admin/users.tsx",
+      "parent": "/_authenticated/admin"
     },
     "/_authenticated/project/$projectCode": {
       "filePath": "_authenticated/project/$projectCode.tsx",
@@ -383,9 +595,21 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/projectManager/addProject.tsx",
       "parent": "/_authenticated/projectManager"
     },
+    "/_authenticated/projectManager/dashboard": {
+      "filePath": "_authenticated/projectManager/dashboard.tsx",
+      "parent": "/_authenticated/projectManager"
+    },
     "/_authenticated/projectManager/managerOverview": {
       "filePath": "_authenticated/projectManager/managerOverview.tsx",
       "parent": "/_authenticated/projectManager"
+    },
+    "/_authenticated/projectManager/projects": {
+      "filePath": "_authenticated/projectManager/projects.tsx",
+      "parent": "/_authenticated/projectManager"
+    },
+    "/_authenticated/admin/": {
+      "filePath": "_authenticated/admin/index.tsx",
+      "parent": "/_authenticated/admin"
     },
     "/_authenticated/project/edit/$projectCode": {
       "filePath": "_authenticated/project/edit/$projectCode.tsx",

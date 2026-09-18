@@ -1,8 +1,21 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import tailwindcss from "@tailwindcss/vite";
 
-// https://vitejs.dev/config/
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
+
 export default defineConfig({
-  plugins: [react(), TanStackRouterVite()],
+  plugins: [
+    TanStackRouterVite({ autoCodeSplitting: true }),
+    react(),
+    tailwindcss(),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(rootDir, "./src"),
+    },
+  },
 });

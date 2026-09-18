@@ -2,9 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+
+    <title>Project Pay — Track Project Budgets, Advances &amp; Payments</title>
+    <meta
+      name="description"
+      content="Project Pay is a project and payment tracker for freelancers and agencies: manage client projects, record advances and payments, and always know who owes what."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#3d5afe" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1224" media="(prefers-color-scheme: dark)" />
+
+    <!-- Update to the real production URL before deploying -->
+    <link rel="canonical" href="https://projectpay.example.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Project Pay" />
+    <meta property="og:title" content="Project Pay — Track Project Budgets, Advances &amp; Payments" />
+    <meta
+      property="og:description"
+      content="Manage client projects, record advances and payments, and always know who owes what — in one calm place."
+    />
+    <meta property="og:url" content="https://projectpay.example.com/" />
+    <meta property="og:image" content="https://projectpay.example.com/social-preview.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Project Pay — Track Project Budgets, Advances &amp; Payments" />
+    <meta
+      name="twitter:description"
+      content="Manage client projects, record advances and payments, and always know who owes what — in one calm place."
+    />
+    <meta name="twitter:image" content="https://projectpay.example.com/social-preview.jpg" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Project Pay",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any (Web)",
+        "description": "Project and payment tracker for freelancers and agencies to manage client projects, advances, and payments."
+      }
+    </script>
+
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem("theme");
+          if (
+            theme === "dark" ||
+            (!theme &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (_) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

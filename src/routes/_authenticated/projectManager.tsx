@@ -1,24 +1,15 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
-import { ErrorComponentProps } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/projectManager")({
   beforeLoad: async ({ context }) => {
-    const user = context.auth.user; // Ensure you get the updated user value
+    const user = context.auth.user;
 
-    if (!user) {
-      throw new Error("User not available in context");
-    }
-
-    if (user.userType !== "project manager") {
-      throw new Error("You are not authorized to access this page");
+    if (!user || user.userType !== "project manager") {
+      throw redirect({ to: "/" });
     }
   },
 
   component: ProjectManagerLayout,
-  errorComponent: ErrorComponent,
-  onError: (error) => {
-    console.error(error);
-  },
 });
 
 function ProjectManagerLayout() {
@@ -27,8 +18,4 @@ function ProjectManagerLayout() {
       <Outlet />
     </div>
   );
-}
-
-function ErrorComponent({ error }: ErrorComponentProps) {
-  return <div>{error.message}</div>;
 }

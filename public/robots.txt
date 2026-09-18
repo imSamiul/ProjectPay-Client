@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /signUp
+
+Disallow: /forgotPassword
+Disallow: /account
+Disallow: /admin
+Disallow: /projectManager
+Disallow: /project
+
+# Update to the real production domain before deploying
+Sitemap: https://projectpay.example.com/sitemap.xml
