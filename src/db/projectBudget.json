@@ -1,0 +1,278 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Project 1",
+      "budget": 8000,
+      "advance": 500,
+      "due": 7500,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 500,
+          "date": "2021-01-01"
+        },
+        {
+          "id": 2,
+          "amount": 500,
+          "date": "2021-01-02"
+        }
+      ],
+      "projectNo": "P001",
+      "client": "Client 1",
+      "startDate": "2021-01-01",
+      "endDate": "2021-01-31",
+      "status": "Active",
+      "description": "Project 1 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 1",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 2",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "1234567890",
+      "clientEmail": "example@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Project 2",
+      "budget": 10000,
+      "advance": 1000,
+      "due": 9000,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 1000,
+          "date": "2021-01-01"
+        },
+        {
+          "id": 2,
+          "amount": 1000,
+          "date": "2021-01-02"
+        }
+      ],
+      "projectNo": "P002",
+      "client": "Client 2",
+      "startDate": "2021-01-01",
+      "endDate": "2021-01-31",
+      "status": "Done",
+      "description": "Project 2 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 1",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 2",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "1234567890",
+      "clientEmail": "example2@example.com"
+    },
+
+    {
+      "id": 3,
+      "name": "Project 3",
+      "budget": 15000,
+      "advance": 2000,
+      "due": 13000,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 2000,
+          "date": "2021-02-01"
+        },
+        {
+          "id": 2,
+          "amount": 1000,
+          "date": "2021-02-05"
+        }
+      ],
+      "projectNo": "P003",
+      "client": "Client 3",
+      "startDate": "2021-02-01",
+      "endDate": "2021-02-28",
+      "status": "Active",
+      "description": "Project 3 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 3",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 4",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "2345678901",
+      "clientEmail": "example3@example.com"
+    },
+    {
+      "id": 4,
+      "name": "Project 4",
+      "budget": 12000,
+      "advance": 1500,
+      "due": 10500,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 1500,
+          "date": "2021-03-01"
+        },
+        {
+          "id": 2,
+          "amount": 2000,
+          "date": "2021-03-03"
+        }
+      ],
+      "projectNo": "P004",
+      "client": "Client 4",
+      "startDate": "2021-03-01",
+      "endDate": "2021-03-31",
+      "status": "Done",
+      "description": "Project 4 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 5",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 6",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "3456789012",
+      "clientEmail": "example4@example.com"
+    },
+    {
+      "id": 5,
+      "name": "Project 5",
+      "budget": 20000,
+      "advance": 5000,
+      "due": 15000,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 3000,
+          "date": "2021-04-01"
+        },
+        {
+          "id": 2,
+          "amount": 2000,
+          "date": "2021-04-05"
+        }
+      ],
+      "projectNo": "P005",
+      "client": "Client 5",
+      "startDate": "2021-04-01",
+      "endDate": "2021-04-30",
+      "status": "Active",
+      "description": "Project 5 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 7",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 8",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "4567890123",
+      "clientEmail": "example5@example.com"
+    },
+    {
+      "id": 6,
+      "name": "Project 6",
+      "budget": 18000,
+      "advance": 3000,
+      "due": 15000,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 3000,
+          "date": "2021-05-01"
+        },
+        {
+          "id": 2,
+          "amount": 2500,
+          "date": "2021-05-03"
+        }
+      ],
+      "projectNo": "P006",
+      "client": "Client 6",
+      "startDate": "2021-05-01",
+      "endDate": "2021-05-31",
+      "status": "Done",
+      "description": "Project 6 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 9",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 10",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "5678901234",
+      "clientEmail": "example6@example.com"
+    },
+    {
+      "id": 7,
+      "name": "Project 7",
+      "budget": 25000,
+      "advance": 4000,
+      "due": 21000,
+      "payment": [
+        {
+          "id": 1,
+          "amount": 4000,
+          "date": "2021-06-01"
+        },
+        {
+          "id": 2,
+          "amount": 3000,
+          "date": "2021-06-05"
+        }
+      ],
+      "projectNo": "P007",
+      "client": "Client 7",
+      "startDate": "2021-06-01",
+      "endDate": "2021-06-30",
+      "status": "Active",
+      "description": "Project 7 Description",
+      "team": [
+        {
+          "id": 1,
+          "name": "Team Member 11",
+          "role": "Role 1"
+        },
+        {
+          "id": 2,
+          "name": "Team Member 12",
+          "role": "Role 2"
+        }
+      ],
+      "clientPhone": "6789012345",
+      "clientEmail": "example7@example.com"
+    }
+  ]
+}
