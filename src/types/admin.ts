@@ -32,7 +32,6 @@ export type AdminProjectRow = {
   due: number;
   totalPaid: number;
   status: boolean;
-  clientName: string;
   projectManager: { _id: string; name: string; email: string } | null;
   createdAt: string;
 };

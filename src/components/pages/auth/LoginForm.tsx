@@ -31,16 +31,16 @@ export function LoginForm() {
       <form onSubmit={onSubmitHandler}>
         <FieldGroup>
           <Field data-invalid={Boolean(error) || undefined}>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
+            <FieldLabel htmlFor="identifier">Email or phone</FieldLabel>
             <Input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              value={formValues.email}
+              id="identifier"
+              type="text"
+              name="identifier"
+              placeholder="you@example.com or 1XXXXXXXXX"
+              value={formValues.identifier}
               onChange={handleFormValues}
               aria-invalid={Boolean(error) || undefined}
-              autoComplete="email"
+              autoComplete="username"
             />
           </Field>
           <Field data-invalid={Boolean(error) || undefined}>

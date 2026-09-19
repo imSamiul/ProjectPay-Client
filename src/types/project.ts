@@ -1,4 +1,5 @@
 import { ManagerType } from "@/types/manager";
+import { LinkedClientType } from "@/types/client";
 import { PaymentType } from "@/types/payment";
 
 export type ProjectType = {
@@ -9,11 +10,6 @@ export type ProjectType = {
   advance: number;
   due?: number;
   totalPaid?: number;
-  clientName: string;
-  clientPhone: string;
-  clientEmail: string;
-  clientAddress: string;
-  clientDetails: string;
   startDate?: string;
   endDate: string;
   demoLink: string;
@@ -21,7 +17,7 @@ export type ProjectType = {
   description: string;
   status?: boolean;
   projectManager?: ManagerType;
-  verifiedClientList?: string[];
+  clients?: LinkedClientType[];
   paymentList?: PaymentType[];
 };
 
@@ -35,11 +31,6 @@ export type UpdateProjectType = {
   name: string;
   budget: number;
   advance: number;
-  clientName: string;
-  clientPhone: string;
-  clientEmail: string;
-  clientAddress: string;
-  clientDetails: string;
   endDate: string;
   demoLink: string;
   typeOfWeb: string;

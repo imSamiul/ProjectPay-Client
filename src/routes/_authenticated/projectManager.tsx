@@ -1,10 +1,8 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/projectManager")({
-  beforeLoad: async ({ context }) => {
-    const user = context.auth.user;
-
-    if (!user || user.userType !== "project manager") {
+  beforeLoad: ({ context }) => {
+    if (context.user.userType !== "project manager") {
       throw redirect({ to: "/" });
     }
   },

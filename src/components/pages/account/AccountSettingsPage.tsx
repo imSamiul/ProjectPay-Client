@@ -15,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { ClientKeyDisplay } from "@/components/shared/ClientKeyDisplay";
 
 export function AccountSettingsPage() {
   const auth = useAuth();
@@ -72,10 +73,27 @@ export function AccountSettingsPage() {
         </p>
       </div>
 
+      {auth.user?.userType === "client" && auth.user.clientKey ? (
+        <Card className="border-border bg-card shadow-none">
+          <CardHeader>
+            <CardTitle className="text-lg">Your client key</CardTitle>
+            <CardDescription>
+              Share this with a project manager so they can add you to a
+              project.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ClientKeyDisplay clientKey={auth.user.clientKey} />
+          </CardContent>
+        </Card>
+      ) : null}
+
       <Card className="border-border bg-card shadow-none">
         <CardHeader>
           <CardTitle className="text-lg">Profile</CardTitle>
-          <CardDescription>Signed in as {auth.user?.email}</CardDescription>
+          <CardDescription>
+            Signed in as {auth.user?.email ?? auth.user?.phone}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleProfileSubmit}>

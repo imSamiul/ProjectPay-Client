@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import ProjectGrid from "@/components/pages/projects/overview/ProjectGrid";
+import { ClientKeyDisplay } from "@/components/shared/ClientKeyDisplay";
 import { formatCurrency } from "@/lib/format";
 
 type HomePageProps = {
@@ -26,7 +27,7 @@ export function HomePage({ user }: HomePageProps) {
   const auth = useAuth();
   const resolvedUser = user ?? auth.user;
   const isLogged = auth.isLogged();
-  const myProjects = useMyProjects(isLogged);
+  const myProjects = useMyProjects(isLogged && resolvedUser?.userType === "client");
 
   useDocumentHead(
     isLogged
@@ -131,6 +132,8 @@ export function HomePage({ user }: HomePageProps) {
     );
   }
 
+  const projects = myProjects.data ?? [];
+
   return (
     <div className="min-h-svh bg-background">
       <AppNavbar />
@@ -142,21 +145,33 @@ export function HomePage({ user }: HomePageProps) {
           </p>
         </div>
 
-        {myProjects.isError ? (
+        {resolvedUser?.clientKey ? (
+          <Card className="border-border bg-card shadow-none">
+            <CardHeader>
+              <CardTitle className="text-base">Your client key</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <p className="text-sm text-muted-foreground">
+                Share this key with your project manager so they can add you
+                to a project.
+              </p>
+              <ClientKeyDisplay clientKey={resolvedUser.clientKey} />
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {!myProjects.isLoading && projects.length === 0 ? (
           <Empty className="border border-dashed border-border py-16">
             <EmptyHeader>
-              <EmptyTitle>Your account isn't linked to a project yet</EmptyTitle>
+              <EmptyTitle>No projects yet</EmptyTitle>
               <EmptyDescription>
-                Ask your project manager to add {resolvedUser?.email} as a
-                verified client on your project.
+                Once a project manager links you to a project using your
+                client key above, it will show up here.
               </EmptyDescription>
             </EmptyHeader>
           </Empty>
         ) : (
-          <ProjectGrid
-            projects={myProjects.data ?? []}
-            isLoading={myProjects.isLoading}
-          />
+          <ProjectGrid projects={projects} isLoading={myProjects.isLoading} />
         )}
       </section>
     </div>

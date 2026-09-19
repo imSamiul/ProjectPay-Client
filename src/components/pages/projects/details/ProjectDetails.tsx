@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { CheckIcon, DownloadIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
 import { ManagerType } from "@/types/manager";
 import { ProjectType } from "@/types/project";
 import { Button } from "@/components/ui/button";
@@ -16,20 +17,11 @@ import { formatCurrency, formatDate } from "@/lib/format";
 import { isProjectOverdue } from "@/lib/project";
 import { downloadProjectInvoice } from "@/lib/pdf";
 
-type ClientSectionKeys = keyof ProjectType;
 type ProjectSectionKeys = keyof ProjectType;
 type ManagerSectionKeys = keyof ManagerType;
 
 const CURRENCY_FIELDS: string[] = ["budget", "advance", "due", "totalPaid"];
 const DATE_FIELDS: string[] = ["startDate", "endDate"];
-
-const ClientSection: { name: string; value: ClientSectionKeys }[] = [
-  { name: "Client Name", value: "clientName" },
-  { name: "Client Email", value: "clientEmail" },
-  { name: "Client Phone", value: "clientPhone" },
-  { name: "Client Address", value: "clientAddress" },
-  { name: "Client Details", value: "clientDetails" },
-];
 
 const ProjectSection: { name: string; value: ProjectSectionKeys }[] = [
   { name: "Project Code", value: "projectCode" },
@@ -67,6 +59,8 @@ function formatDetailValue(field: string, value: unknown): ReactNode {
 }
 
 function ProjectDetails({ details }: ProjectDetailsPropsType) {
+  const auth = useAuth();
+  const isManager = auth.user?.userType === "project manager";
   const updateProjectStatus = useUpdateProjectStatus();
   const [isGeneratingInvoice, setIsGeneratingInvoice] = useState(false);
 
@@ -109,33 +103,37 @@ function ProjectDetails({ details }: ProjectDetailsPropsType) {
             <DownloadIcon data-icon="inline-start" />
             {isGeneratingInvoice ? "Preparing…" : "Invoice"}
           </Button>
-          <Button
-            variant={details.status ? "secondary" : "default"}
-            onClick={handleProjectStatus}
-            disabled={updateProjectStatus.isPending}
-          >
-            <CheckIcon data-icon="inline-start" />
-            {details.status ? "Done" : "Make Complete"}
-          </Button>
-          <Button
-            render={
-              <Link
-                to="/project/edit/$projectCode"
-                params={{
-                  projectCode: details.projectCode ?? "",
-                }}
+          {isManager ? (
+            <>
+              <Button
+                variant={details.status ? "secondary" : "default"}
+                onClick={handleProjectStatus}
+                disabled={updateProjectStatus.isPending}
+              >
+                <CheckIcon data-icon="inline-start" />
+                {details.status ? "Done" : "Make Complete"}
+              </Button>
+              <Button
+                render={
+                  <Link
+                    to="/project/edit/$projectCode"
+                    params={{
+                      projectCode: details.projectCode ?? "",
+                    }}
+                  />
+                }
+              >
+                <PencilIcon data-icon="inline-start" />
+                Edit
+              </Button>
+              <ProjectDeleteModal
+                modalId="projectDeleteModal"
+                projectCode={details.projectCode!}
+                projectId={details._id!}
+                projectName={details.name}
               />
-            }
-          >
-            <PencilIcon data-icon="inline-start" />
-            Edit
-          </Button>
-          <ProjectDeleteModal
-            modalId="projectDeleteModal"
-            projectCode={details.projectCode!}
-            projectId={details._id!}
-            projectName={details.name}
-          />
+            </>
+          ) : null}
         </div>
       </div>
 
@@ -176,27 +174,6 @@ function ProjectDetails({ details }: ProjectDetailsPropsType) {
                 </p>
               );
             })}
-          </div>
-
-          <Separator />
-
-          <div className="flex flex-col gap-3">
-            <h4 className="text-lg font-semibold md:text-xl">Client Section</h4>
-            <div className="grid grid-cols-1 gap-2 lg:grid-cols-3">
-              {ClientSection.map((clientDetail) => {
-                const value = details[clientDetail.value];
-                return (
-                  <p key={clientDetail.value} className="text-sm md:text-base">
-                    <span className="font-medium text-foreground">
-                      {clientDetail.name}:{" "}
-                    </span>
-                    <span className="text-muted-foreground">
-                      {formatDetailValue(clientDetail.value, value)}
-                    </span>
-                  </p>
-                );
-              })}
-            </div>
           </div>
 
           <Separator />

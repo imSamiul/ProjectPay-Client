@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { ProjectType } from "@/types/project";
-import phone from "phone";
-import * as EmailValidator from "email-validator";
 import { useCreateNewProject } from "@/services/mutations/use-project-mutations";
 
 const initialProject: ProjectType = {
   name: "",
   budget: 0,
   advance: 0,
-  clientName: "",
-  clientPhone: "",
-  clientEmail: "",
-  clientAddress: "",
-  clientDetails: "",
   startDate: new Date().toISOString().split("T")[0],
   endDate: "",
   demoLink: "",
@@ -40,9 +33,6 @@ export function useProjectForm() {
       project.name === "" ||
       project.budget === undefined ||
       project.advance === undefined ||
-      project.clientName === "" ||
-      project.clientPhone === "" ||
-      project.clientEmail === "" ||
       project.startDate === "" ||
       project.endDate === ""
     ) {
@@ -52,22 +42,6 @@ export function useProjectForm() {
 
     if (Number(project.advance) > Number(project.budget)) {
       setError("Advance cannot exceed the total budget.");
-      return false;
-    }
-
-    const phoneNum = "+880" + project.clientPhone;
-    const isValidPhone = phone(phoneNum);
-
-    if (!isValidPhone.isValid && project.clientPhone?.length !== 10) {
-      setError(
-        "Client phone number must be valid and 10 digits long (excluding country code).",
-      );
-      return false;
-    }
-
-    const isValidEmail = EmailValidator.validate(project.clientEmail);
-    if (!isValidEmail) {
-      setError("Client email must be valid.");
       return false;
     }
 

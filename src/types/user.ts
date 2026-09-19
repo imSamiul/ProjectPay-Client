@@ -1,10 +1,22 @@
 export type UserType = {
   id?: string;
   name?: string;
-  email: string;
+  email?: string;
+  phone?: string;
+  userType?: "client" | "admin" | "project manager";
+  clientKey?: string;
+};
+
+export type SignUpPayload = {
+  email?: string;
   phone?: string;
   password: string;
-  userType?: "client" | "admin" | "project manager";
+  userType: "client" | "project manager";
+};
+
+export type LoginPayload = {
+  identifier: string;
+  password: string;
 };
 
 export type UpdateProfilePayload = {

@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { UserType } from "@/types/user";
+import { LoginPayload } from "@/types/user";
 import { useLoginUser } from "@/services/mutations/use-user-mutations";
-import * as EmailValidator from "email-validator";
 
-const initialValues: UserType = {
-  email: "",
+const initialValues: LoginPayload = {
+  identifier: "",
   password: "",
 };
 
 export function useLoginForm() {
-  const [formValues, setFormValues] = useState<UserType>(initialValues);
+  const [formValues, setFormValues] = useState<LoginPayload>(initialValues);
   const loginUserMutation = useLoginUser();
 
   const [error, setError] = useState<string | null>(null);
@@ -25,21 +24,12 @@ export function useLoginForm() {
 
   // Form validation logic
   const validateForm = (): boolean => {
-    if (formValues.email === "" || formValues.password === "") {
+    if (formValues.identifier === "" || formValues.password === "") {
       setError("Please fill all the fields");
       return false;
     }
 
-    const isValidEmail = EmailValidator.validate(formValues.email);
-    if (!isValidEmail) {
-      setError("Email must be valid");
-      return false;
-    }
-
-    if (
-      formValues.password.length < 6 ||
-      formValues.password.includes("password")
-    ) {
+    if (formValues.password.length < 6) {
       setError("Password must be valid");
       return false;
     }

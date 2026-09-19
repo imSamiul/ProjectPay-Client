@@ -11,6 +11,7 @@ import {
 import { useMemo, useState } from "react";
 import { ArrowUpDownIcon, DownloadIcon } from "lucide-react";
 import { toast } from "sonner";
+import { LinkedClientType } from "@/types/client";
 import { PaymentType } from "@/types/payment";
 import { formatCurrency, formatDate } from "@/lib/format";
 import { downloadPaymentReceipt } from "@/lib/pdf";
@@ -33,8 +34,9 @@ type PaymentListTablePropsType = {
   data: PaymentType[];
   projectName: string;
   projectCode?: string;
-  clientName: string;
+  clients?: LinkedClientType[];
   due: number;
+  isManager: boolean;
 };
 
 const columnHelper = createColumnHelper<PaymentType>();
@@ -43,8 +45,9 @@ function PaymentListTable({
   data,
   projectName,
   projectCode,
-  clientName,
+  clients,
   due,
+  isManager,
 }: PaymentListTablePropsType) {
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -92,7 +95,7 @@ function PaymentListTable({
                 downloadPaymentReceipt(info.row.original, {
                   name: projectName,
                   projectCode,
-                  clientName,
+                  clients,
                 }).catch(() => {
                   toast.error("Couldn't generate the receipt. Please try again.");
                 });
@@ -100,30 +103,34 @@ function PaymentListTable({
             >
               <DownloadIcon />
             </Button>
-            <Button
-              size="sm"
-              onClick={() => {
-                setSelectedPayment(info.row.original);
-                setIsModalOpen(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              size="sm"
-              variant="destructive"
-              onClick={() => {
-                setSelectedPayment(info.row.original);
-                setIsDeleteModalOpen(true);
-              }}
-            >
-              Delete
-            </Button>
+            {isManager ? (
+              <>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setSelectedPayment(info.row.original);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  onClick={() => {
+                    setSelectedPayment(info.row.original);
+                    setIsDeleteModalOpen(true);
+                  }}
+                >
+                  Delete
+                </Button>
+              </>
+            ) : null}
           </div>
         ),
       }),
     ],
-    [projectName, projectCode, clientName],
+    [projectName, projectCode, clients, isManager],
   );
 
   const table = useReactTable({

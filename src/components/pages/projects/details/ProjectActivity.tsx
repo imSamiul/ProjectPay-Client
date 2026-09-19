@@ -21,12 +21,16 @@ export function ProjectActivity({ project }: ProjectActivityProps) {
     const items: ActivityEntry[] = [];
 
     if (project.startDate) {
+      const clientNames = (project.clients ?? [])
+        .map((client) => client.name || client.email || client.phone)
+        .filter(Boolean)
+        .join(", ");
       items.push({
         id: "start",
         date: new Date(project.startDate),
         icon: FlagIcon,
         title: "Project started",
-        description: `Kicked off for ${project.clientName}`,
+        description: clientNames ? `Kicked off for ${clientNames}` : "Project kicked off",
       });
     }
 

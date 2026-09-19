@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ClientsPage } from "@/components/pages/clients/ClientsPage";
+import { ManagerClientsPage } from "@/components/pages/clients/ManagerClientsPage";
 import { managerClientsQuery } from "@/lib/queries/clients";
 import { PAGE_SIZE } from "@/lib/query-keys";
 
@@ -12,9 +12,7 @@ function parsePage(value: unknown): number {
   return Number.isFinite(page) && page >= 1 ? Math.floor(page) : 1;
 }
 
-export const Route = createFileRoute(
-  "/_authenticated/projectManager/addClient",
-)({
+export const Route = createFileRoute("/_authenticated/projectManager/clients")({
   validateSearch: (search: Record<string, unknown>): ClientsSearch => ({
     page: parsePage(search.page),
   }),
@@ -24,15 +22,15 @@ export const Route = createFileRoute(
       managerClientsQuery(deps.page, PAGE_SIZE),
     );
   },
-  component: AddClientRoute,
+  component: ClientsRoute,
 });
 
-function AddClientRoute() {
+function ClientsRoute() {
   const navigate = Route.useNavigate();
   const { page } = Route.useSearch();
 
   return (
-    <ClientsPage
+    <ManagerClientsPage
       page={page}
       onPageChange={(nextPage) =>
         navigate({

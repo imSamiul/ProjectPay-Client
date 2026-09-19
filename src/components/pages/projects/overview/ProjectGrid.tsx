@@ -50,6 +50,12 @@ function ProjectGrid({ projects, isLoading }: ProjectGridProps) {
         const paidPercent =
           budget > 0 ? Math.min(100, (paid / budget) * 100) : 0;
 
+        const clientNames =
+          project.clients
+            ?.map((client) => client.name || client.email || client.phone)
+            .filter(Boolean)
+            .join(", ") || "Unassigned";
+
         return (
           <Link
             key={project._id}
@@ -77,11 +83,7 @@ function ProjectGrid({ projects, isLoading }: ProjectGridProps) {
                   </p>
                   <p>
                     <span className="font-medium text-foreground">Client:</span>{" "}
-                    {project.clientName}
-                  </p>
-                  <p>
-                    <span className="font-medium text-foreground">Phone:</span>{" "}
-                    {project.clientPhone}
+                    {clientNames}
                   </p>
                   <p>
                     <span className="font-medium text-foreground">

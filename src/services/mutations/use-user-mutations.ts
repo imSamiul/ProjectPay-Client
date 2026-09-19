@@ -9,7 +9,14 @@ import {
   requestPasswordReset,
   updateUserProfile,
 } from "@/services/api/users";
-import { ChangePasswordPayload, ForgotPasswordPayload, UpdateProfilePayload, UserType } from "@/types/user";
+import {
+  ChangePasswordPayload,
+  ForgotPasswordPayload,
+  LoginPayload,
+  SignUpPayload,
+  UpdateProfilePayload,
+  UserType,
+} from "@/types/user";
 import { useNavigate, type NavigateFn } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/use-auth";
 import { userKeys } from "@/lib/query-keys";
@@ -35,9 +42,15 @@ export function useCreateUser() {
   const auth = useAuth();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (userObj: UserType) => createUser(userObj),
+    mutationFn: (userObj: SignUpPayload) => createUser(userObj),
     onSuccess: (data) => {
-      toast.success(`Welcome, ${data.user.name ?? "there"}.`);
+      if (data.user.userType === "client" && data.user.clientKey) {
+        toast.success(`Welcome. Your client key is ${data.user.clientKey}.`, {
+          description: "Share this with your project manager to get added to a project.",
+        });
+      } else {
+        toast.success(`Welcome, ${data.user.name ?? "there"}.`);
+      }
       auth.login(data.token, data.user);
       queryClient.setQueryData(userKeys.me(), { user: data.user });
       navigateAfterAuth(navigate, data.user.userType);
@@ -50,7 +63,7 @@ export function useLoginUser() {
   const auth = useAuth();
   const navigate = useNavigate();
   return useMutation({
-    mutationFn: (userLoginObj: UserType) => loginUser(userLoginObj),
+    mutationFn: (userLoginObj: LoginPayload) => loginUser(userLoginObj),
     onSuccess: (data) => {
       toast.success("Logged in.");
       auth.login(data.token, data.user);

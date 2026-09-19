@@ -39,43 +39,15 @@ export function SignUpForm() {
       <form onSubmit={onSubmitHandler}>
         <FieldGroup>
           <Field>
-            <FieldLabel htmlFor="name">Name</FieldLabel>
+            <FieldLabel htmlFor="identifier">Email or phone</FieldLabel>
             <Input
-              id="name"
-              name="name"
-              placeholder="Your name"
-              value={formValues.name}
+              id="identifier"
+              name="identifier"
+              placeholder="you@example.com or 1XXXXXXXXX"
+              value={formValues.identifier}
               onChange={handleFormValues}
-              autoComplete="name"
+              autoComplete="username"
             />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              value={formValues.email}
-              onChange={handleFormValues}
-              autoComplete="email"
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="phone">Phone</FieldLabel>
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">(+880)</span>
-              <Input
-                id="phone"
-                name="phone"
-                placeholder="1XXXXXXXXX"
-                value={formValues.phone}
-                minLength={10}
-                maxLength={10}
-                onChange={handleFormValues}
-                autoComplete="tel"
-              />
-            </div>
           </Field>
           <Field>
             <FieldLabel htmlFor="password">Password</FieldLabel>

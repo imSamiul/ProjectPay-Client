@@ -84,61 +84,6 @@ export function EditProjectForm({
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor="clientName">Client Name</FieldLabel>
-              <Input
-                id="clientName"
-                name="clientName"
-                type="text"
-                placeholder="Client Name (required)"
-                value={editProjectValues.clientName}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientPhone">Client Phone</FieldLabel>
-              <Input
-                id="clientPhone"
-                name="clientPhone"
-                type="text"
-                placeholder="Client Phone Number (eg. 17XXXXXXXX) (required)"
-                value={editProjectValues.clientPhone}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientEmail">Client Email</FieldLabel>
-              <Input
-                id="clientEmail"
-                name="clientEmail"
-                type="email"
-                placeholder="Client Email (required)"
-                value={editProjectValues.clientEmail}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientAddress">Client Address</FieldLabel>
-              <Input
-                id="clientAddress"
-                name="clientAddress"
-                type="text"
-                placeholder="Client Address"
-                value={editProjectValues.clientAddress}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientDetails">Client Details</FieldLabel>
-              <Input
-                id="clientDetails"
-                name="clientDetails"
-                type="text"
-                placeholder="Client Details"
-                value={editProjectValues.clientDetails}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
               <FieldLabel htmlFor="demoLink">Demo Link</FieldLabel>
               <Input
                 id="demoLink"

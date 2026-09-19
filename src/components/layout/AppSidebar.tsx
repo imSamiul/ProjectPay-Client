@@ -5,7 +5,6 @@ import {
   LayoutDashboardIcon,
   LogOutIcon,
   SettingsIcon,
-  UserPlusIcon,
   UsersIcon,
 } from "lucide-react";
 import navbarLogo from "@/assets/nav-logo.png";
@@ -64,6 +63,12 @@ const projectManagerNavGroups: NavGroup[] = [
         search: { q: "", page: 1 },
         icon: FolderKanbanIcon,
       },
+      {
+        title: "Clients",
+        to: "/projectManager/clients",
+        search: { page: 1 },
+        icon: UsersIcon,
+      },
     ],
   },
   {
@@ -73,12 +78,6 @@ const projectManagerNavGroups: NavGroup[] = [
         title: "Add Project",
         to: "/projectManager/addProject",
         icon: FolderPlusIcon,
-      },
-      {
-        title: "Add Client",
-        to: "/projectManager/addClient",
-        search: { page: 1 },
-        icon: UserPlusIcon,
       },
     ],
   },
@@ -180,7 +179,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <div className="flex items-center justify-between gap-2 px-2 py-1">
           <span className="truncate text-xs text-sidebar-foreground/70">
-            {auth.user?.email}
+            {auth.user?.email ?? auth.user?.phone}
           </span>
           <ThemeToggle />
         </div>

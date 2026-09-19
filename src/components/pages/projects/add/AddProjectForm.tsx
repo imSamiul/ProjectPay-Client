@@ -58,64 +58,6 @@ export function AddProjectForm() {
               />
             </Field>
             <Field>
-              <FieldLabel htmlFor="clientName">Client Name</FieldLabel>
-              <Input
-                id="clientName"
-                type="text"
-                name="clientName"
-                value={project.clientName}
-                placeholder="Client Name (required)"
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientPhone">Client Phone</FieldLabel>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">(+880)</span>
-                <Input
-                  id="clientPhone"
-                  type="tel"
-                  name="clientPhone"
-                  placeholder="Client Phone Number (eg. 17XXXXXXXX) (required)"
-                  value={project.clientPhone}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientEmail">Client Email</FieldLabel>
-              <Input
-                id="clientEmail"
-                type="email"
-                name="clientEmail"
-                placeholder="Client Email Address (required)"
-                value={project.clientEmail}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientAddress">Client Address</FieldLabel>
-              <Input
-                id="clientAddress"
-                type="text"
-                name="clientAddress"
-                placeholder="Client Address"
-                value={project.clientAddress}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="clientDetails">Client Details</FieldLabel>
-              <Input
-                id="clientDetails"
-                type="text"
-                name="clientDetails"
-                placeholder="Client Details"
-                value={project.clientDetails}
-                onChange={handleInputChange}
-              />
-            </Field>
-            <Field>
               <FieldLabel htmlFor="startDate">Start Date</FieldLabel>
               <Input
                 id="startDate"
@@ -174,6 +116,11 @@ export function AddProjectForm() {
               <FieldDescription>{error}</FieldDescription>
             </Field>
           ) : null}
+
+          <FieldDescription>
+            You can link a client to this project using their client key from
+            the project&apos;s page after it&apos;s created.
+          </FieldDescription>
 
           <Button type="submit">Submit</Button>
         </FieldGroup>

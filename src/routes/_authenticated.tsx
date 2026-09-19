@@ -18,6 +18,8 @@ export const Route = createFileRoute("/_authenticated")({
     }
 
     context.auth.setUserDetails(data.user);
+
+    return { user: data.user };
   },
   component: AuthenticatedLayout,
 });

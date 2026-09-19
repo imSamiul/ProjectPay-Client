@@ -4,8 +4,9 @@ import Cookies from "js-cookie";
 import {
   ChangePasswordPayload,
   ForgotPasswordPayload,
+  LoginPayload,
+  SignUpPayload,
   UpdateProfilePayload,
-  UserType,
 } from "@/types/user";
 import { API_BASE_URL } from "@/lib/api-base";
 import { getAuthToken } from "@/lib/auth";
@@ -35,11 +36,11 @@ export async function fetchUserDetails() {
 
 // POST:user
 // create new user
-export async function createUser(userSignUpObj: UserType) {
+export async function createUser(userSignUpObj: SignUpPayload) {
   return (await axios.post(`${API_URL}/user/signUp`, userSignUpObj)).data;
 }
 // login user
-export async function loginUser(userLoginObj: UserType) {
+export async function loginUser(userLoginObj: LoginPayload) {
   return (await axios.post(`${API_URL}/user/login`, userLoginObj)).data;
 }
 // logout user

@@ -1,5 +1,14 @@
-import { useState } from "react";
-import { Trash2Icon } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ArrowUpDownIcon, Trash2Icon } from "lucide-react";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
 import { useAuth } from "@/hooks/use-auth";
 import { useAdminUsers } from "@/lib/queries/admin-hooks";
 import { useDeleteAdminUser } from "@/services/mutations/use-admin-mutations";
@@ -35,6 +44,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Pagination from "@/components/shared/Pagination";
+import TableSearchBar from "@/components/shared/TableSearchBar";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -51,6 +61,8 @@ type AdminUsersPageProps = {
   onRoleChange: (role: AdminUserRole | "all") => void;
 };
 
+const columnHelper = createColumnHelper<AdminUserRow>();
+
 export function AdminUsersPage({
   page,
   role,
@@ -61,6 +73,78 @@ export function AdminUsersPage({
   const users = useAdminUsers(page, PAGE_SIZE, role === "all" ? undefined : role);
   const [userToDelete, setUserToDelete] = useState<AdminUserRow | null>(null);
   const deleteUser = useDeleteAdminUser();
+
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+
+  const data = users.data?.users ?? [];
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("name", {
+        header: "Name",
+        cell: (info) => (
+          <span className="font-medium text-foreground">{info.getValue() || "—"}</span>
+        ),
+      }),
+      columnHelper.accessor("email", {
+        header: "Email",
+        cell: (info) => info.getValue() || "—",
+      }),
+      columnHelper.accessor("phone", {
+        header: "Phone",
+        cell: (info) => info.getValue() || "—",
+      }),
+      columnHelper.accessor("userType", {
+        header: "Role",
+        cell: (info) => (
+          <Badge variant={info.getValue() === "admin" ? "default" : "secondary"}>
+            {ROLE_LABEL[info.getValue()]}
+          </Badge>
+        ),
+      }),
+      columnHelper.accessor("createdAt", {
+        header: "Joined",
+        cell: (info) => formatDate(info.getValue()),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: (info) => {
+          const user = info.row.original;
+          const isSelf = user.email === auth.user?.email;
+          return (
+            <div className="flex justify-end">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                aria-label="Delete user"
+                disabled={user.userType === "admin" || isSelf}
+                onClick={() => setUserToDelete(user)}
+              >
+                <Trash2Icon />
+              </Button>
+            </div>
+          );
+        },
+      }),
+    ],
+    [auth.user?.email],
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+      globalFilter,
+    },
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
+    getFilteredRowModel: getFilteredRowModel(),
+  });
 
   return (
     <div className="flex flex-col gap-6">
@@ -100,7 +184,7 @@ export function AdminUsersPage({
                 <Skeleton key={index} className="h-10 w-full" />
               ))}
             </div>
-          ) : (users.data?.users.length ?? 0) === 0 ? (
+          ) : data.length === 0 ? (
             <Empty className="border border-dashed border-border py-10">
               <EmptyHeader>
                 <EmptyTitle>No users found</EmptyTitle>
@@ -108,47 +192,51 @@ export function AdminUsersPage({
               </EmptyHeader>
             </Empty>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Joined</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.data?.users.map((user) => {
-                  const isSelf = user.email === auth.user?.email;
-                  return (
-                    <TableRow key={user.id}>
-                      <TableCell className="font-medium text-foreground">{user.name}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.phone}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.userType === "admin" ? "default" : "secondary"}>
-                          {ROLE_LABEL[user.userType]}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{formatDate(user.createdAt)}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          size="icon-sm"
-                          variant="ghost"
-                          aria-label="Delete user"
-                          disabled={user.userType === "admin" || isSelf}
-                          onClick={() => setUserToDelete(user)}
-                        >
-                          <Trash2Icon />
-                        </Button>
-                      </TableCell>
+            <div className="flex flex-col gap-3">
+              <TableSearchBar
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+              />
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id}>
+                          <div
+                            className={`flex items-center gap-2 ${
+                              header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : ""
+                            }`}
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                            {header.column.getCanSort() ? (
+                              <ArrowUpDownIcon className="size-3.5 text-muted-foreground" />
+                            ) : null}
+                          </div>
+                        </TableHead>
+                      ))}
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           )}
 
           {(users.data?.pagination.totalPages ?? 1) > 1 ? (

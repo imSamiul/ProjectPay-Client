@@ -135,3 +135,25 @@ export async function deleteProject(projectId: string) {
     throw error;
   }
 }
+
+// POST: link a client to a project using their client key
+export async function linkClientToProject(
+  projectCode: string,
+  clientKey: string,
+) {
+  const response = await instance.post(`/${projectCode}/clients`, {
+    clientKey,
+  });
+  return response.data;
+}
+
+// DELETE: unlink a client from a project
+export async function unlinkClientFromProject(
+  projectCode: string,
+  clientId: string,
+) {
+  const response = await instance.delete(
+    `/${projectCode}/clients/${clientId}`,
+  );
+  return response.data;
+}

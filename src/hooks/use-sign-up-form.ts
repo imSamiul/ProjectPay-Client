@@ -1,19 +1,27 @@
 import { useState } from "react";
-import { phone } from "phone";
+import { phone as validatePhone } from "phone";
 import * as EmailValidator from "email-validator";
-import { UserType } from "@/types/user";
+import { SignUpPayload } from "@/types/user";
 import { useCreateUser } from "@/services/mutations/use-user-mutations";
 
-const initialValues: UserType = {
-  name: "",
-  email: "",
-  phone: "",
+type SignUpFormValues = {
+  identifier: string;
+  password: string;
+  userType: "client" | "project manager";
+};
+
+const initialValues: SignUpFormValues = {
+  identifier: "",
   password: "",
   userType: "client",
 };
 
+function isEmailLike(value: string): boolean {
+  return value.includes("@");
+}
+
 export function useSignUpForm() {
-  const [formValues, setFormValues] = useState<UserType>(initialValues);
+  const [formValues, setFormValues] = useState<SignUpFormValues>(initialValues);
   const [error, setError] = useState<string | null>(null);
 
   const createUserMutation = useCreateUser();
@@ -30,7 +38,7 @@ export function useSignUpForm() {
     }));
   };
 
-  const setFieldValue = (name: keyof UserType, value: string) => {
+  const setFieldValue = (name: keyof SignUpFormValues, value: string) => {
     setError(null);
     setFormValues((prev) => ({
       ...prev,
@@ -40,28 +48,23 @@ export function useSignUpForm() {
 
   // Form validation logic
   const validateForm = (): boolean => {
-    if (
-      formValues.name === "" ||
-      formValues.email === "" ||
-      formValues.phone === "" ||
-      formValues.password === ""
-    ) {
+    if (formValues.identifier === "" || formValues.password === "") {
       setError("Please fill all the fields");
       return false;
     }
 
-    const phoneNum = "+880" + formValues.phone;
-    const isValidPhone = phone(phoneNum);
-
-    if (!isValidPhone.isValid && formValues.phone?.length !== 10) {
-      setError("Phone no must be valid");
-      return false;
-    }
-
-    const isValidEmail = EmailValidator.validate(formValues.email);
-    if (!isValidEmail) {
-      setError("Email must be valid");
-      return false;
+    if (isEmailLike(formValues.identifier)) {
+      if (!EmailValidator.validate(formValues.identifier)) {
+        setError("Email must be valid");
+        return false;
+      }
+    } else {
+      const phoneNum = "+880" + formValues.identifier;
+      const isValidPhone = validatePhone(phoneNum);
+      if (!isValidPhone.isValid && formValues.identifier.length !== 10) {
+        setError("Enter a valid email or a 10-digit phone number");
+        return false;
+      }
     }
 
     if (
@@ -93,7 +96,15 @@ export function useSignUpForm() {
       return;
     }
 
-    createUserMutation.mutate(formValues, {
+    const payload: SignUpPayload = {
+      password: formValues.password,
+      userType: formValues.userType,
+      ...(isEmailLike(formValues.identifier)
+        ? { email: formValues.identifier }
+        : { phone: formValues.identifier }),
+    };
+
+    createUserMutation.mutate(payload, {
       onSuccess: () => setFormValues(initialValues),
     });
   };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "@/lib/api-base";
 import { getAuthToken } from "@/lib/auth";
-import { ClientType } from "@/types/client";
+import { ManagerClientRow } from "@/types/client";
 import { ManagerStats } from "@/types/manager-stats";
 import { PaginationMeta } from "@/types/pagination";
 import { ProjectType } from "@/types/project";
@@ -28,11 +28,6 @@ export type PaginatedProjects = {
   pagination: PaginationMeta;
 };
 
-export type PaginatedClients = {
-  clients: ClientType[];
-  pagination: PaginationMeta;
-};
-
 export async function getManagerProjects({
   pageParam = 1,
   limit = 10,
@@ -54,19 +49,10 @@ export async function getManagerStats(): Promise<ManagerStats> {
   return response.data;
 }
 
-export type CreateClientPayload = {
-  clientName: string;
-  clientPhone: string;
-  clientEmail: string;
-  password?: string;
+export type PaginatedManagerClients = {
+  clients: ManagerClientRow[];
+  pagination: PaginationMeta;
 };
-
-export async function createManagerClient(payload: CreateClientPayload) {
-  const response = await instance.post<{
-    client: ClientType & { temporaryPassword?: string };
-  }>("/clients", payload);
-  return response.data;
-}
 
 export async function getManagerClients({
   pageParam = 1,
@@ -74,7 +60,7 @@ export async function getManagerClients({
 }: {
   pageParam?: number;
   limit?: number;
-} = {}): Promise<PaginatedClients> {
+} = {}): Promise<PaginatedManagerClients> {
   const response = await instance.get("/clients", {
     params: { pageParam, limit },
   });
