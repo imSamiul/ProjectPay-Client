@@ -38,7 +38,3 @@ coverage/
 
 # Vite
 .vite/
-
-# Local agent / tooling
-.agents/
-skills-lock.json
